@@ -1,0 +1,128 @@
+= General Terms of Use, ownCloud app
+V 1.0 Marc DeXeT (marc.dexet@dsi.cnrs.fr)
+French version
+:appversion: 1.0
+:ocfrmversion: 7.n
+:gtuApp: OCA\Gtu\AppInfo\GtuApp
+:gtuService: OCA\Gtu\Service\GtuService 
+:interceptor: OCA\Gtu\AppInfo\Interceptor
+:namespace: OCA\Gtu\
+:toc:
+
+== Descriptif
+_GTU_ est une application pour le gestionnaire de fichier http://owncloud.org[owncloud]. Ce document en précise les éléments les plus caractéristiques.
+
+
+== Objectif de l'application
+L'objectif de cette application est de faire signer, avant toute possibilité d'utilisation de owncloud, des Conditions Générales d'Utilisation (ou CGU).
+Pour ce faire, l'application 'Gtu' intercepte toute requête HTTP et vérifie que l'utilisateur a signé les dernières CGU.
+
+== Architecture
+CGU suit le framework de création d'application Apps pour owncloud {ocfrmversion} 
+
+Elle est composée des éléments fondamentaux suivant
+ 
+ * Un conteneur d'injection (IoC) +{gtuApp}+ pour initialiser l'application
+ * Un service +{gtuService}+ en charge des opérations de haut niveau
+ * Un intercepteur +{interceptor}+ 
+ * Une persistence en base de données des validations de gtu
+ ** avec une entitée +OCA\Gtu\Db\UserGtuValidation+ et un +mapper+ associé
+ * Un contrôleur REST +OCA\Gtu\\Controller\GtuApiController+
+ * Deux hooks situés dans +OCA\Gtu\\Hook\GtuHooks+
+
+== Fonctionnement de l'intercepteur
+
+Le fonctionnement de l'intercepteur est un point délicat qu'il est nécessaire d'expliquer.
+
+L'intercepteur est appelé à chaque requête HTTP. A chaque fois le processus est 
+
+ * Si l'utilisateur est authentifié
+ ** Si l'utilisateur *n'a pas signé les dernières CGU*
+ *** Si la requête n'est pas autorisée (cf. conditions) et qu'il est nécessaire d'afficher le formulaire de validation
+ *** ALORS affiche le formulaire 
+
+Le formulaire est appelée dans l'intercepteur en utilisant le template du login et en imposant un template +templates/validate.php+
+[source,php]
+----
+\OC_Template::printGuestPage('gtu', 
+	'validate', array(
+		'msg' 					
+			=> $this->appConfig->getValue('gtu', 'msg'),
+		'start_page_url' 		
+			=> $this->appConfig->getValue('gtu', 'start_page_url', 
+					\OC_Util::getDefaultPageUrl()), 
+		'start_page_message' 	
+			=> $this->appConfig->getValue('gtu', 'start_page_message') )
+);
+exit();
+----
+
+=== Conditions d'autorisation des requêtes
+
+Seules les requêtes de ressource nécessaires à l'affichage ou au traitement en mode ajax de l'agrément sont autorisées à être traitées.
+
+[source,php]
+----
+function isAllowed() {
+	$requestedPath = $this->path($_SERVER['REQUEST_URI']);
+
+	if ( $this->endsWith($requestedPath, '.js') ) return true;
+	if ( $this->endsWith($requestedPath, '.css')) return true;
+	if ( $this->endsWith($requestedPath, 'apps/gtu/api/agreement')) return true;
+
+	return false;
+}
+----
+
+=== Evaluation des conditions d'affichage des CGU
+
+Le formulaire de validation des CGU ne s'affiche que quand il ne s'agit pas de route enregistrée, mais uniquement de script .php
+
+[source,php]
+----
+function isRequiredToDisplayGTU() {
+	$requestedPath = $this->path($_SERVER['REQUEST_URI']);
+	if ( $this->endsWith($requestedPath, '.php')) return false;
+	return true;
+}
+----
+
+=== Paramètres de personnalisation
+
+Les paramètres de personnalisation sont disponibles dans la partie 'Administration'' sous l'intitulé 'General Terme of Usage'.
+
+version:: Numéro de version des CGU, se doit d'être un entier
+text:: Texte accompagnant les CGU
+url:: URL contenant le texte *complet* des CGU, si possible un document owncloud publique publié par l'adminitrateur
+msg:: Message présentant l'écran de validation des CGU
+start_page_url:: URL de la page suivant la validation des CGU
+start_page_message:: Message présentant l'URL de la page suivant la validation
+
+
+== Usage des _hooks_
+
+Des hooks sont déclarés dans la classe +OCA\Gtu\\Hook\GtuHooks+. 
+
+1. Le premier ''onDeleteUser'' supprime l'enregistrement de la validation en base lorsque l'utilisateur est supprimé
+2. le second 'onLogout' détruit une variable de session 'gtu_ok' positionnée lors de la validation des CGU.
+
+== Applications AngularJS
+
+L'application utilise le framework Javascript AngularJS *comme il est spécifié* dans la documentation owncloud.
+
+_Il s'avère que ce framwork marche bien pour une page d'application, mais pas très bien pour la partie settings._
+
+
+La partie angularJS est composé de deux controleurs
+1. Gtu.EditAppCtrl, en charge de l'édition
+2. Gtu.ValidateAppCtrl en charge de la validation
+
+=== EditAppCtrl 
+Ce controleur prend en charge l'édition des préférences de l'application dans la partie administration (cf. <<Paramètres de personnalisation>>)
+
+Il utilise l'api +gtu/api/params+ en mode POST et GET
+
+=== ValidateAppCtrl
+Ce controleur prend en charge la partie validation des CGU
+
+Il utilise l'api +gtu/api/agreement+ en mode GET et POST 

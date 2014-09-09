@@ -1,0 +1,11 @@
+<?xml version="1.0"?>
+<info>
+    <id>gtu</id>
+    <name>User General Terms of Use validation</name>
+    <description>Simple app that does some computing</description>
+    <version>1.0</version>
+    <licence>AGPL</licence>
+    <author>Marc DeXeT</author>
+    <require>7.0</require>
+    <shipped>true</shipped>
+</info>

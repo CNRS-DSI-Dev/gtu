@@ -25,7 +25,6 @@ namespace OCA\Gtu\AppInfo;
 $app = new GtuApp();
 $c = $app->getContainer();
 \OCP\App::registerAdmin('gtu','settings/admin');
-\OCP\App::registerPersonal('gtu', 'settings/user');
 
 
 $c->query('GtuHooks')->register( $app->getUserSession());

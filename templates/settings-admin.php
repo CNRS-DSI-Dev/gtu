@@ -30,30 +30,30 @@
 	<h2><?php p($l->t('General Terme of Usage configuration'));?></h2>
 	<form id="gtuFormID" class="gtu_form">
 		<div class="block">
-		<label class="label" for="version">Version:</label>
+		<label class="label" for="version"><?php p($l->t("Version"));?>:</label>
 			<input type="number"  name="version" value="<?php p($_['version'])?>" title="<?php p($l->t('Version of current GTU'));?>" >
 
 		</div>
-		<div class="block"><label class="label" for="text">Text:</label>
-		<input type="text"   name="text" value="<?php p($_['text'])?>" title="<?php p($l->t('text of current GTU'));?>" >
+		<div class="block"><label class="label" for="text"><?php p($l->t("Text"));?>:</label>
+		<input type="text"   name="text" value="<?php p($_['text'])?>" title="<?php p($l->t('Text of current GTU'));?>" >
 
 		</div>
-		<div class="block"><label class="label" for="url">url:</label>
-			<input type="url"   name="url" value="<?php p($_['url'])?>" title="<?php p($l->t('url of current GTU'));?>" >
+		<div class="block"><label class="label" for="url"><?php p($l->t("Url"));?>:</label>
+			<input type="url"   name="url" value="<?php p($_['url'])?>" title="<?php p($l->t('Url of current GTU'));?>" >
 
 		</div>
-		<div class="block"><label class="label" for="url">Screen Message</label>
-			<input type="text"   name="msg" value="<?php p($_['msg'])?>" title="<?php p($l->t('msg of current GTU'));?>">
+		<div class="block"><label class="label" for="url"><?php p($l->t("Screen Message"));?>:</label>
+			<input type="text"   name="msg" value="<?php p($_['msg'])?>" title="<?php p($l->t('Msg of current GTU'));?>">
 
 		</div>
-		<div class="block"><label class="label" for="url">Homepage URL</label>
+		<div class="block"><label class="label" for="url"><?php p($l->t("Homepage URL"));?>:</label>
 			<input type="text"   name="start_page_url" value="<?php p($_['start_page_url'])?>"
-			title="<?php p($l->t('start page url of current GTU'));?>">
+			title="<?php p($l->t('Start page url of current GTU'));?>">
 			
 		</div>
-		<div class="block"><label class="label" for="url">Homepage message</label>
+		<div class="block"><label class="label" for="url"><?php p($l->t("Homepage Message"));?>:</label>
 			<input type="text"   name="start_page_message" value="<?php p($_['start_page_message'])?>"
-			title="<?php p($l->t('start page url of current GTU'));?>">
+			title="<?php p($l->t('Start Page Message'));?>">
 			
 		</div>
 	</form>

@@ -27,7 +27,7 @@
 \OCP\Util::addStyle( "gtu", "gtu" );
 ?>
 <div class="section">
-	<h2><?php p($l->t('General Terme of Usage configuration'));?></h2>
+	<h2><?php p($l->t('General Terms of Usage configuration'));?></h2>
 	<form id="gtuFormID" class="gtu_form">
 		<div class="block">
 		<label class="label" for="version"><?php p($l->t("Version"));?>:</label>

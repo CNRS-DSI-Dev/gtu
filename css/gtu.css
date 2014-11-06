@@ -3,17 +3,39 @@
     position: absolute; /* makes the div go into a position that’s absolute to the browser viewing area */
     left: 25%; /* positions the div half way horizontally */
     top: 25%; /* positions the div half way vertically */
-    padding: 25px; 
-    border: 2px solid black;
+    padding: 25px;
+    border: 2px solid #555;
     background-color: #ffffff;
     width: 50%;
     height: 50%;
     z-index: 100; /* makes the div the top layer, so it’ll lay on top of the other content */
+    color: #555;
+}
+
+.overlay #app fieldset {
+  text-align: inherit;
+}
+
+.overlay #app h2 {
+  font-size: 150%;
+  margin-bottom: 2em;
+  margin-left, margin-right: auto;
+}
+
+.overlay #app p {
+  margin-bottom: 1em;
+  text-align: left;
+}
+
+.overlay #app button {
+  margin: 1em auto;
+  box-sizing: border-box;
+  padding: 1em;
 }
 
 .label {
-    text-align: right; 
-    width: 7em; 
+    text-align: right;
+    width: 7em;
     display: inline-block;
 }
 
@@ -38,16 +60,24 @@
 }
 
 
-.block label { 
-  display: inline-block; 
-  width: 250px; 
-  text-align: right; 
+.block label {
+  display: inline-block;
+  width: 250px;
+  text-align: right;
   margin-right: 15px;
 }
 
 .gtu_changed {
-  background: lightYellow; 
+  background: lightYellow;
 }
 .gtu_saved {
-  background: lightGreen; 
+  background: lightGreen;
+}
+
+.gtu-loading {
+  color: #999;
+}
+
+.gtu-status {
+  color: #999;
 }

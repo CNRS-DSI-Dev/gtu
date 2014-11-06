@@ -35,17 +35,17 @@ $msg = isset($_['msg']) ? $_['msg']: ''
 	<div id="app" ng-app="Gtu" ng-controller="ValidateAppCtrl">
 		<div id="app-content" ng-view ng-class="{loading: is.loading}">
 			<h2><?php p($msg)?></h2>
-			<div ng-hide="show">Chargement en cours...</div>
+			<div class="gtu-loading" ng-hide="show">Chargement en cours...</div>
 			<form ng-show="show" name="login">
 				<fieldset>
 					<p>Veuillez prendre connaissance des nouvelles Conditions Générales d'Utilisation en version <b>{{gtu.version}}</b></p>
-					<p>Contenu: {{gtu.text}}</p>
-					<p>Téléchargez le document complet des CGU en suivant le lien suivant: <a href="{{gtu.url}}" target="_gtu">{{gtu.url}}</a></p>
+					<p>Contenu : {{gtu.text}}</p>
+					<p>Téléchargez le document complet des CGU en suivant le lien suivant : <a href="{{gtu.url}}" target="_gtu">{{gtu.url}}</a></p>
 					<button ng-show="notValidated" ng-click="validate()">
-						VALIDER LES CGU version {{gtu.version}}
+						VALIDER LES CGU
 					</button>
 					<div class="gtu-status">{{status}}</div>
-					<div ng-hide="notValidated">  
+					<div ng-hide="notValidated">
 						<a href="<?php p($_['start_page_url']);?>"><?php p($_['start_page_message']);?></a>
 					</div>
 				</fieldset>

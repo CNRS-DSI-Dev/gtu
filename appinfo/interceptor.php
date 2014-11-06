@@ -65,7 +65,6 @@ class Interceptor {
 
 	function isAllowed() {
 		$requestedPath = $this->path($_SERVER['REQUEST_URI']);
-		$isAjax = strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) == 'xmlhttprequest';
 
 		if ( $this->endsWith($requestedPath, '.js') ) return true;
 		if ( $this->endsWith($requestedPath, '.css')) return true;

@@ -41,13 +41,10 @@ $msg = isset($_['msg']) ? $_['msg']: ''
 					<p>Veuillez prendre connaissance des nouvelles Conditions Générales d'Utilisation en version <b>{{gtu.version}}</b></p>
 					<p>Contenu : {{gtu.text}}</p>
 					<p>Téléchargez le document complet des CGU en suivant le lien suivant : <a href="{{gtu.url}}" target="_gtu">{{gtu.url}}</a></p>
+					<p><input type="checkbox" ng-model="notValidated"/> J'accepte les CGU.</p>
 					<button ng-show="notValidated" ng-click="validate()">
-						VALIDER LES CGU
+						<?php p($_['start_page_message']);?>
 					</button>
-					<div class="gtu-status">{{status}}</div>
-					<div ng-hide="notValidated">
-						<a href="<?php p($_['start_page_url']);?>"><?php p($_['start_page_message']);?></a>
-					</div>
 				</fieldset>
 			</form>
 		</div>

@@ -11,11 +11,11 @@ var app = angular.module('Gtu',[]).
 
 
 // app.controller('AppCtrl', ['$scope','$http','$filter', function($scope, $http, $filter){
-	
+
 // 	var loc = OC.generateUrl('apps/gtu/api/gtu');
 // 	$scope.status = 'loading';
 // 	$scope.notValidated =  true;
-	
+
 // 	// http://stackoverflow.com/a/16387215/1306771
 // 	$http.get(loc).
 // 		success( function(data, status, headers, config){
@@ -65,12 +65,12 @@ app.controller('EditAppCtrl', ['$scope','$http', function($scope, $http){
 	// function to post a new version
 	$scope.doPost = function(){
 
-		$http.post(OC.generateUrl('apps/gtu/api/params'), 
-			{ version: $scope.version, 
-				text: $scope.text, 
-				url: $scope.url, 
-				msg: $scope.msg, 
-				start_page_message: $scope.start_page_message, 
+		$http.post(OC.generateUrl('apps/gtu/api/params'),
+			{ version: $scope.version,
+				text: $scope.text,
+				url: $scope.url,
+				msg: $scope.msg,
+				start_page_message: $scope.start_page_message,
 				start_page_url: $scope.start_page_url} ).
 		success( function(data, status, headers, config){
 			$scope.status = 'Saved';
@@ -89,12 +89,12 @@ app.controller('EditAppCtrl', ['$scope','$http', function($scope, $http){
 * Controller for GTU management
 */
 
-app.controller('ValidateAppCtrl', ['$scope','$http', function($scope, $http){
+app.controller('ValidateAppCtrl', ['$scope','$http', '$window', function($scope, $http, $window){
 	var loc = OC.generateUrl('apps/gtu/api/agreement');
 	$scope.status = '';
-	$scope.notValidated =  true;
+	$scope.notValidated =  false;
 	$scope.show = false;
-	
+
 	// http://stackoverflow.com/a/16387215/1306771
 	$http.get(loc).
 		success( function(data, status, headers, config){
@@ -107,7 +107,12 @@ app.controller('ValidateAppCtrl', ['$scope','$http', function($scope, $http){
     	}
     );
 
-
+    $http.get( OC.generateUrl('apps/gtu/api/params') ).
+		success( function(data){
+			$scope.start_page_url = data.start_page_url;
+		}).error(function(data, status, headers, config){
+			$scope.status = 'Error '+status;
+		});
 
 	$scope.validate = function() {
 		$scope.status = 'Validation en cours';
@@ -115,6 +120,7 @@ app.controller('ValidateAppCtrl', ['$scope','$http', function($scope, $http){
 			success( function(data, status, headers, config){
 				$scope.status = 'Validation enregistrée';
 				$scope.notValidated =  false;
+				$window.location.href = $scope.start_page_url;
 			}).
     		error( function(data, status, headers, config) {
       			$scope.status = 'Validation error';

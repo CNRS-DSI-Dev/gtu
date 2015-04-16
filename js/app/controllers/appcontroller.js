@@ -119,7 +119,6 @@ app.controller('ValidateAppCtrl', ['$scope','$http', '$window', function($scope,
 		$http.post(loc).
 			success( function(data, status, headers, config){
 				$scope.status = 'Validation enregistrée';
-				$scope.notValidated =  false;
 				$window.location.href = $scope.start_page_url;
 			}).
     		error( function(data, status, headers, config) {

@@ -1,6 +1,6 @@
 <?php
 /**
- * ownCloud - 
+ * ownCloud -
  *
  * @author Marc DeXeT
  * @copyright 2014 DSI CNRS https://www.dsi.cnrs.fr
@@ -36,7 +36,7 @@ class GtuHooks {
 	* post_deleteUser
 	*/
 	public function onPostDeleteUser($user) {
-		\OCP\Util::writeLog('GtuHooks', 'onPostDeleteUser ',\OCP\Util::ERROR);
+		\OCP\Util::writeLog('GtuHooks', 'onPostDeleteUser ',\OCP\Util::INFO);
 		$uid = $user->getUID();
 		$ugv = $this->userGtuValidationMapper->findByUid($uid);
 		$this->userGtuValidationMapper->delete($ugv);
@@ -58,4 +58,4 @@ class GtuHooks {
 
 
 }
- 
+

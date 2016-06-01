@@ -24,7 +24,7 @@ namespace OCA\Gtu\Service;
 use OCP\AppFramework\Db\DoesNotExistException;
 use OC\User\User;
 /**
- * 
+ *
  * @author MDE
  *
  */
@@ -47,7 +47,7 @@ class GtuService {
 
 
  	/**
- 	 * 
+ 	 *
  	 * @param User $user
  	 * @return boolean
  	 */
@@ -61,9 +61,7 @@ class GtuService {
  		if ( $gtu['version'] < 0 ) {
  			return true;
  		}
- 		
 
- 		
  		$value = TRUE;
  		try {
  			$vald 	= $this->userGtuValidationMapper->findByUid($uid);
@@ -80,7 +78,7 @@ class GtuService {
  		return $value;
  	}
 
- 	
+
  	public function getActiveGTU() {
 		if ( $this->currentGtu === null ) {
 			$ac = $this->appConfig;
@@ -123,7 +121,7 @@ class GtuService {
 		$ac->setValue('gtu', 'url', $url);
  		$ac->setValue('gtu', 'msg', $msg);
  		$ac->setValue('gtu', 'start_page_url', $start_page_url);
- 		$ac->setValue('gtu', 'start_page_message', $start_page_message);		
+ 		$ac->setValue('gtu', 'start_page_message', $start_page_message);
  		return true;
 
  	}
@@ -135,7 +133,7 @@ class GtuService {
  		if (  isset($uid) ) {
  			$this->userGtuValidationMapper->updateValidation($uid, 	$gtu['version']);
  			$this->session->set('gtu_ok', $uid);
- 		} 
+ 		}
  	}
 
 
@@ -143,5 +141,5 @@ class GtuService {
  		if ( ! isset($user) ) return FALSE;
  		return \OC_User::isAdminUser($user->getUID());
  	}
- 	
+
  }

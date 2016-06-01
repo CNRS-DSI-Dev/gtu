@@ -33,6 +33,10 @@
   padding: 1em;
 }
 
+#gtuLogin.overlay form {
+  width: inherit;
+}
+
 .label {
     text-align: right;
     width: 7em;

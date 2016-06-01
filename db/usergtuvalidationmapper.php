@@ -26,14 +26,14 @@ use OCP\AppFramework\Db\DoesNotExistException;
 use OCP\IDb;
 
 class UserGtuValidationMapper extends Mapper {
-	
+
 	public function __construct(IDb $db) {
 		parent::__construct($db, 'user_gtu_validations');
 	}
-	
+
 	public function findByUid($uid){
 		$sql = 'SELECT * FROM `'.$this->getTableName().'` WHERE `uid`=?';
-		$userGtu = $this->findEntity($sql, array('uid'=> $uid));
+		$userGtu = $this->findEntity($sql, array($uid));
 /*		$userGtu = new UserGtuValidation();
 		$userGtu->fromRow($row);
 */		return $userGtu;
@@ -53,7 +53,7 @@ class UserGtuValidationMapper extends Mapper {
 		}
 
 	}
-	
-	
+
+
 }
 ?>

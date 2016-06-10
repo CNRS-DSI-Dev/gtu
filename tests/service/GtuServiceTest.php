@@ -20,11 +20,11 @@
  *
  */
  namespace  OCA\Gtu\Service;
- 
+
 
 
  use OCA\Gtu\Db\Gtu;
- use OCA\Gtu\Db\UserGtuValidation; 
+ use OCA\Gtu\Db\UserGtuValidation;
  use PHPUnit_Framework_TestSuite;
  use OCP\AppFramework\Db\DoesNotExistException;
 
@@ -33,13 +33,13 @@
  * @author MDE
  *
  */
-class GtuServiceTest extends \PHPUnit_Framework_TestCase { 
- 	
- 	private $service; 
+class GtuServiceTest extends \Test\TestCase {
+
+ 	private $service;
  	private $appConfig;
  	private $userGtuValidationMapper;
  	private $userManager;
- 	
+
  	protected function setUp(){
  		// $this->appConfig = $this->getMockBuilder('OC\AppConfig')
  		// 						->disableOriginalConstructor()
@@ -60,15 +60,15 @@ class GtuServiceTest extends \PHPUnit_Framework_TestCase {
 								->getMock();
 
  		$this->service = new GtuService(
- 			$this->appConfig, 
- 			$this->userGtuValidationMapper, 
- 			$this->userManager, 
+ 			$this->appConfig,
+ 			$this->userGtuValidationMapper,
+ 			$this->userManager,
  			$this->session);
- 
+
 
  	}
- 	
- 	
+
+
  	/**
  	 * No GTU recorded
  	 */
@@ -76,7 +76,7 @@ class GtuServiceTest extends \PHPUnit_Framework_TestCase {
  		//___GIVEN____
 		$this->generateAppConfig( array('version' => '-1', 'text' => null, 'url' => null) );
  		$user = $this->getMockBuilder('\OC\User\User')->disableOriginalConstructor()->getMock();
- 		
+
  		// $this->appConfig->expects($this->any())
 	 	// 	->method('getValue')
 	 	// 	->with('gtu','version')
@@ -86,17 +86,17 @@ class GtuServiceTest extends \PHPUnit_Framework_TestCase {
 	 		->method('get')
 	 		->with('gtu_ok')
 	 		->willReturn( false);
- 		
- 		
+
+
  		//___WHEN___
 
  		$value =$this->service->isLastGtuAgreed($user);
- 		
- 		
+
+
  		//__THEN__
  		$this->assertTrue($value);
  	}
- 	
+
  	/**
  	 * User has validated the last GTU, so it's OK
  	 */
@@ -104,36 +104,36 @@ class GtuServiceTest extends \PHPUnit_Framework_TestCase {
  		//___GIVEN____
  		$this->generateAppConfig( array('version' => '3', 'text' => 'blabla', 'url' => 'http://nowhere') );
  		$user = $this->generateUser();
- 		
+
  		$ugtValidation = new UserGtuValidation();
- 	
+
  		// when no record in DB, DoesNotExistException is thrown
  		$this->userGtuValidationMapper
  			->expects($this->any())
  			->method('findByUid')
  			->will($this->throwException(new DoesNotExistException('NoSignature') ));
- 			
- 			
+
+
  		//___WHEN___
  		$isOk = $this->service->isLastGtuAgreed($user);
- 			
+
  		//__THEN__
  		$this->assertFalse($isOk);
  	}
- 	
+
 
  	/**
  	 * User has not validated the last GTU
- 	 */	
+ 	 */
  	public function test_IsLastGtuAgreed_UserHasNotAgreed() {
  		//___GIVEN____
  		$this->generateAppConfig(array('version' => '3', 'text' => 'blabla', 'url' => 'http://nowhere'));
  		$user = $this->generateUser();
- 		
+
  		$valid = new UserGtuValidation();
  		$valid->gtuVersion = 1;
- 		
- 		// Session must not be used !	
+
+ 		// Session must not be used !
  		$this->session->expects($this->never())
 	 		->method('set')
 	 		->with('gtu_ok', 'uid@domain');
@@ -143,22 +143,22 @@ class GtuServiceTest extends \PHPUnit_Framework_TestCase {
  		->will($this->returnValue($valid) );
  		//___WHEN___
  		$isOk = $this->service->isLastGtuAgreed($user);
- 	
+
  		//__THEN__
  		$this->assertFalse($isOk);
  	}
- 	
+
  	/**
  	 * User has not validated the last GTU
- 	 */	
+ 	 */
  	public function test_IsLastGtuAgreed_Ok() {
  		//___GIVEN____
  		$this->generateAppConfig(array('version' => '3', 'text' => 'blabla', 'url' => 'http://nowhere'));
  		$user = $this->generateUser();
- 		
+
  		$valid = new UserGtuValidation();
  		$valid->gtuVersion = 3;
- 	
+
  		// it's expected that session 'gtu_ok' value is set to '1'
  		$this->session->expects($this->once())
 	 		->method('get')
@@ -167,13 +167,13 @@ class GtuServiceTest extends \PHPUnit_Framework_TestCase {
  		$this->session->expects($this->once())
 	 		->method('set')
 	 		->with('gtu_ok', 'uid@domain');
-	 		
+
  		$this->userGtuValidationMapper->expects($this->any())
  		->method('findByUid')
  		->will($this->returnValue($valid) );
  		//___WHEN___
  		$isOk = $this->service->isLastGtuAgreed($user);
- 	
+
  		//__THEN__
  		$this->assertTrue($isOk);
  	}
@@ -188,7 +188,7 @@ class GtuServiceTest extends \PHPUnit_Framework_TestCase {
 
  		//___WHEN___
  		$isOk = $this->service->isLastGtuAgreed($user);
- 	
+
  		//__THEN__
  		$this->assertTrue($isOk);
  		$this->assertEquals(0, $this->appConfig->callCount);
@@ -199,12 +199,12 @@ class GtuServiceTest extends \PHPUnit_Framework_TestCase {
  	 * undocumented function
  	 *
  	 * @return void
- 	 * @author 
+ 	 * @author
  	 **/
  	function testValidateGTU() {
  		//__GIVEN__
  		$this->generateAppConfig(array('version' => '3', 'text' => 'blabla', 'url' => 'http://nowhere'));
- 		$user = $this->generateUser(); 		
+ 		$user = $this->generateUser();
 
  		$this->userGtuValidationMapper->expects($this->once())
  			->method('updateValidation')
@@ -215,14 +215,14 @@ class GtuServiceTest extends \PHPUnit_Framework_TestCase {
  			->with('gtu_ok', 'uid@domain');
 
 		$this->service->validateGTU($user);
- 	
+
  	}
 
  	/**
  	 * undocumented function
  	 *
  	 * @return void
- 	 * @author 
+ 	 * @author
  	 **/
  	function generateAppConfig($config){
  /*		$this->appConfig->expects($this->any())
@@ -238,8 +238,8 @@ class GtuServiceTest extends \PHPUnit_Framework_TestCase {
  		$this->appConfig->expects($this->any())
  		->method('getValue')
  		->with('gtu', 'url')
- 		->willReturn($config['url']);			 		
- */	
+ 		->willReturn($config['url']);
+ */
  		$this->appConfig->data = $config;
 
  	}
@@ -250,7 +250,7 @@ class GtuServiceTest extends \PHPUnit_Framework_TestCase {
  		return $user;
 
  	}
- 	
+
  }
 
  class LocalAppConfig {

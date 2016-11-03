@@ -21,6 +21,7 @@
  */
 namespace OCA\Gtu\Hook;
 use OCA\Gtu\Db\UserGtuValidation;
+use OCP\AppFramework\Http\JSONResponse;
 
 class GtuHooks {
 
@@ -38,8 +39,22 @@ class GtuHooks {
 	public function onPostDeleteUser($user) {
 		\OCP\Util::writeLog('GtuHooks', 'onPostDeleteUser ',\OCP\Util::INFO);
 		$uid = $user->getUID();
-		$ugv = $this->userGtuValidationMapper->findByUid($uid);
+		try {
+			$ugv = $this->userGtuValidationMapper->findByUid($uid);
+		}
+		catch(\Exception $e) {
+			return new JSONResponse([
+				'status' => 'success',
+                'data' => [
+                    'message' => '',
+                ]);
+		}
 		$this->userGtuValidationMapper->delete($ugv);
+		return new JSONResponse([
+				'status' => 'success',
+                'data' => [
+                    'message' => '',
+                ]);
 	}
 
 	public function onLogout() {

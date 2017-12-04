@@ -23,6 +23,7 @@
 \OCP\Util::addScript('gtu', 'app/controllers/appcontroller');
 \OCP\Util::addScript('gtu', 'app/services/services');
 \OCP\Util::addStyle( "gtu", "gtu" );
+\OCP\Util::addStyle( "gtu", "styles" );
 \OCP\Util::addStyle( "settings", "settings" );
 \OCP\Util::addStyle( "", "apps" );
 
